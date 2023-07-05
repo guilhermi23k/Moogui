@@ -1,6 +1,4 @@
-# Moogui
-
-![Project Image](project-image-url)
+![logo](https://github.com/guilhermi23k/Moogui/assets/66974244/c25338ea-ab83-4ed4-afa2-d498bdd3ce88)
 
 > This is a ReadMe template to help save you time and effort.
 
