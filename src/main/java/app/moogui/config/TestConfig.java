@@ -21,11 +21,10 @@ public class TestConfig implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		UserModel u1 = new UserModel(null, "mariabb", "maria@gmail.com", "123456", "free_user");
-		UserModel u2 = new UserModel(null, "Alexgg", "alex@gmail.com", "123456", "free_user");
-		String hashPwd = passwordEncoder.encode(u2.getPassword());
-    	u2.setPassword(hashPwd);
-		service.newUser(u2);
+		UserModel u = new UserModel(null, "teste", "teste@gg.com", "123456", "free_user");
+		String hashPwd = passwordEncoder.encode(u.getPassword());
+    	u.setPassword(hashPwd);
+		service.newUser(u);
 	}
 	
 	
