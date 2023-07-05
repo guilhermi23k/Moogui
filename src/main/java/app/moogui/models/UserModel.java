@@ -30,10 +30,10 @@ public class UserModel implements Serializable{
 		
 	}
 	
-	public UserModel(Long id, String name, String email, String password, String role) {
+	public UserModel(Long id, String username, String email, String password, String role) {
 		super();
 		this.id = id;
-		this.username = name;
+		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.role = role;

@@ -36,11 +36,11 @@ public class UserController {
 		return ResponseEntity.ok().body(obj);
 	}
 	
-	@PostMapping
-	public ResponseEntity<UserModel> createUser(@RequestBody UserModel obj){
-		obj = service.newUser(obj);
-		return ResponseEntity.ok().body(obj);
-	}
+//	@PostMapping
+//	public ResponseEntity<UserModel> createUser(@RequestBody UserModel obj){
+//		obj = service.newUser(obj);
+//		return ResponseEntity.ok().body(obj);
+//	}
 	
 	@PutMapping(value="/{id}")
 	public ResponseEntity<UserModel> updateUser(@PathVariable Long id, @RequestBody UserModel obj){
