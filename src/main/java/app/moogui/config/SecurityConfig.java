@@ -1,13 +1,11 @@
 package app.moogui.config;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +17,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import app.moogui.filter.CsrfCookieFilter;
+import app.moogui.filter.JWTTokenGeneratorFilter;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Configuration
@@ -28,22 +27,26 @@ public class SecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
         requestHandler.setCsrfRequestAttributeName("_csrf");
-        http.securityContext((context) -> context.requireExplicitSave(false))
+        
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
-                    @Override
+                    
+                	@Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                         CorsConfiguration config = new CorsConfiguration();
 //                        config.setAllowedOrigins(Collections.singletonList("http://localhost:8080"));
 //                        config.setAllowedMethods(Collections.singletonList("*"));
 //                        config.setAllowCredentials(true);
 //                        config.setAllowedHeaders(Collections.singletonList("*"));
+                          config.setExposedHeaders(Arrays.asList("Authorization"));
 //                        config.setMaxAge(3600L);
                         return config;
                     }
                 })).csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/register")
                  .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests((requests)->requests
                         .requestMatchers("/users").hasRole("ADMIN")
                         .requestMatchers("/user").authenticated()
