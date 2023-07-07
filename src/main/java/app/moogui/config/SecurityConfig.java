@@ -18,6 +18,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import app.moogui.filter.CsrfCookieFilter;
 import app.moogui.filter.JWTTokenGeneratorFilter;
+import app.moogui.filter.JWTTokenValidatorFilter;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Configuration
@@ -47,6 +48,7 @@ public class SecurityConfig {
                  .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests((requests)->requests
                         .requestMatchers("/users").hasRole("ADMIN")
                         .requestMatchers("/user").authenticated()
