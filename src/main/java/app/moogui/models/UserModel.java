@@ -2,14 +2,20 @@ package app.moogui.models;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.SpringSecurityCoreVersion;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,11 +26,18 @@ public class UserModel implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator="native")
 	@GenericGenerator(name = "native",strategy = "native")
-	private Long id;
+	private Long user_id;
 	private String username;
 	private String email;
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 	private String role;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
+	private Set<Authority> authorities;
+	
+	
 	
 	public UserModel(){
 		
@@ -32,7 +45,7 @@ public class UserModel implements Serializable{
 	
 	public UserModel(Long id, String username, String email, String password, String role) {
 		super();
-		this.id = id;
+		this.user_id = id;
 		this.username = username;
 		this.email = email;
 		this.password = password;
@@ -48,19 +61,20 @@ public class UserModel implements Serializable{
 
 
 	public Long getId() {
-		return id;
+		return user_id;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.user_id = id;
 	}
+	
 
-	public String getName() {
+	public String getUsername() {
 		return username;
 	}
 
-	public void setName(String name) {
-		this.username = name;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getEmail() {
@@ -79,10 +93,18 @@ public class UserModel implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
+	
+	public void setAuthorities(Set<Authority> authorities) {
+		this.authorities = authorities;
+	}
+	
+	public Set<Authority> getAuthorities(){
+		return authorities;
+	}
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(user_id);
 	}
 
 	@Override
@@ -94,7 +116,7 @@ public class UserModel implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		UserModel other = (UserModel) obj;
-		return Objects.equals(id, other.id);
+		return Objects.equals(user_id, other.user_id);
 	}
 	
 	
