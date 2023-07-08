@@ -34,4 +34,5 @@ build/
 
 ###
 SecurityConstants.java
+ApiConstants.java
 application-dev.properties

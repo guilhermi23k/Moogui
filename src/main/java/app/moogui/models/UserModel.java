@@ -25,7 +25,6 @@ public class UserModel implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator="native")
-	@GenericGenerator(name = "native",strategy = "native")
 	private Long user_id;
 	private String username;
 	private String email;
@@ -46,7 +45,6 @@ public class UserModel implements Serializable{
 	public UserModel(Long id, String username, String email, String password, String role) {
 		super();
 		this.user_id = id;
-
 		this.user_id = id;
 		this.username = username;
 		this.email = email;
