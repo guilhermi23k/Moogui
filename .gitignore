@@ -34,3 +34,4 @@ build/
 
 ###
 SecurityConstants.java
+application-dev.properties

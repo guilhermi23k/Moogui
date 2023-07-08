@@ -15,13 +15,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.moogui.models.UserModel;
-import app.moogui.repositories.UserRepository;
+import app.moogui.services.UserService;
 
 @RestController
 public class LoginController {
-
+//
+//    @Autowired
+//    private UserRepository repo;
+    
     @Autowired
-    private UserRepository repo;
+    private UserService serv;
+    
     
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -33,7 +37,7 @@ public class LoginController {
         try {
             String hashPwd = passwordEncoder.encode(user.getPassword());
             user.setPassword(hashPwd);
-            savedUser = repo.save(user);
+            savedUser = serv.create(user);
             if (savedUser.getId() > 0) {
                 response = ResponseEntity
                         .status(HttpStatus.CREATED)
@@ -50,7 +54,7 @@ public class LoginController {
 	
 	 @RequestMapping("/user")
 	    public UserModel getUserDetailsAfterLogin(Authentication authentication) {
-	        Optional<UserModel> userO = repo.findByEmail(authentication.getName());
+	        Optional<UserModel> userO = Optional.of(serv.findByEmail(authentication.getName()));
 	        List<UserModel> user = userO.map(Collections::singletonList)
 	                .orElse(Collections.emptyList());
 	        if (user.size() > 0) {

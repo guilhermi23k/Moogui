@@ -24,7 +24,7 @@ public class TestConfig implements CommandLineRunner{
 		UserModel u = new UserModel(null, "teste", "teste@gg.com", "123456", "free_user");
 		String hashPwd = passwordEncoder.encode(u.getPassword());
     	u.setPassword(hashPwd);
-		service.newUser(u);
+		service.create(u);
 	}
 	
 	

@@ -31,7 +31,7 @@ public class UserService {
 		return obj.get();
 	}
 	
-	public UserModel newUser(UserModel newUser) {
+	public UserModel create(UserModel newUser) {
 		return repository.save(newUser);	
 	}
 	
