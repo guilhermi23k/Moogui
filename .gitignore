@@ -33,6 +33,6 @@ build/
 .vscode/
 
 ###
-SecurityConstants.java
-ApiConstants.java
-application-dev.properties
+*\SecurityConstants.java
+*\ApiConstants.java
+*\application-dev.properties
