@@ -24,7 +24,7 @@ public class ChatGptController {
 			{"model": "gpt-3.5-turbo",
 			 "messages": [{"role": "user", "content": "%s"}],
 			 "temperature": 0.7
-			}
+			} 
 			""";
 	
 	
