@@ -13,12 +13,11 @@ import org.json.JSONObject;
 
 public class ChatGptController {
 	
-	
-	
+
+
 
 	protected String prompt;
 	private static final String api_key = ApiConstants.gpt_key;
-	
 	private static final String URL = "https://api.openai.com/v1/chat/completions";
 	private static final String REQUEST_BODY = """
 			{"model": "gpt-3.5-turbo",

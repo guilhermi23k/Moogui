@@ -1,9 +1,13 @@
 package app.moogui.repositories;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import app.moogui.models.Titles;
+import app.moogui.models.Title;
 
-public interface TitleRepository extends JpaRepository<Titles, Long>{
+public interface TitleRepository extends JpaRepository<Title, Long>{
+	Optional<Title>findByName(String name);
+	
 	
 }
