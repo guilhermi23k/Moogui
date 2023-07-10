@@ -33,5 +33,5 @@ build/
 .vscode/
 
 ###
-*/constants/*
+constants/
 */application-dev.properties
