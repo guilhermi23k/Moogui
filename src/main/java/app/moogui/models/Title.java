@@ -34,7 +34,7 @@ public class Title{
 		this.name = name;
 		this.gender = gender;
 		this.year = year;
-		this.plot = plot;
+		this.plot = plot; 
 		this.duration = duration;
 		this.rating = rating;
 	}

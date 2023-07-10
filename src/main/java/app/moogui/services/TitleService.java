@@ -24,7 +24,7 @@ public class TitleService {
 		return obj.get();
 	}
 	
-	public Title create(Title title) {
+	public Title create(Title title) { 
 		return repo.save(title);
 	}
 	
