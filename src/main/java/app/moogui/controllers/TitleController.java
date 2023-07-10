@@ -20,7 +20,7 @@ public class TitleController {
 	
 	@GetMapping(value = "/choices")
 	public String getTitles() {
-		return movieapi();		
+		return getGptResponse();		
 	}
 	
 	private String movieapi() {
