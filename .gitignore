@@ -34,4 +34,4 @@ build/
 
 ###
 constants/
-application-dev
+application-dev.properties
