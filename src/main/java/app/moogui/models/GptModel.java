@@ -1,4 +1,4 @@
-package app.moogui.controllers;
+package app.moogui.models;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -11,7 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
  
-public class ChatGptController {
+public class GptModel {
 	
 
 
@@ -20,16 +20,16 @@ public class ChatGptController {
 	private static final String api_key = ApiConstants.gpt_key;
 	private static final String URL = "https://api.openai.com/v1/chat/completions";
 	private static final String REQUEST_BODY = """
-			{"model": "gpt-3.5-turbo",
+			{"model": "gpt-3.5-turbo-16k",
 			 "messages": [{"role": "user", "content": "%s"}],
-			 "temperature": 0.7
+			 "temperature": 0.0
 			} 
 			""";
 	
 	
 	
 	
-	public ChatGptController(String prompt) {
+	public GptModel(String prompt) {
 		this.prompt = prompt;
 	}
 
@@ -58,20 +58,25 @@ public class ChatGptController {
 				.header("Authorization", "Bearer " + api_key)
 				.POST(BodyPublishers.ofString(postBody))
 				.build();
-		
-		var client = HttpClient.newHttpClient();
-		var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+		try {
+			var client = HttpClient.newHttpClient();
+			var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+			String resp = response.body().toString();
+			JSONObject myResponse = new JSONObject(resp.toString());
+			JSONArray choices = myResponse.getJSONArray("choices");
+			JSONObject firstChoice = choices.getJSONObject(0);
+			JSONObject messageObject = firstChoice.getJSONObject("message");
+			String content = messageObject.getString("content");
+			return content;
+			
+		}catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
 		
 //		Assertions.assertEquals(200, response.statusCode());
-		String resp = response.body().toString();
-		JSONObject myResponse = new JSONObject(resp.toString());
-		JSONArray choices = myResponse.getJSONArray("choices");
-		JSONObject firstChoice = choices.getJSONObject(0);
-		JSONObject messageObject = firstChoice.getJSONObject("message");
-		String content = messageObject.getString("content");
 
 		
-		return content;
 	}
 }
 
