@@ -24,28 +24,29 @@ public class TitleController {
 	
 	@GetMapping(value = "/choices")
 	public List<String> getTitles() {
-		return getGptResponse();
+		return movieApi(getGptResponse());
 			
 	}
 	
-	public List<String> movieApi(String[] GptResponse) {
-		List<String> titles = null;
-		for(int i=0; i<2; i++) {
+	public List<String> movieApi(List<String> GptResponse) {
+		List<String> titles = new ArrayList();
+		for(int i=0; i<GptResponse.size(); i++) {
 			try {
 				HttpRequest request = HttpRequest.newBuilder()
-						.uri(URI.create("http://www.omdbapi.com/?apikey="+ ApiConstants.omdb_key +"t=" + GptResponse[i]))
-						.header("accept", "application/json")
-						.method("GET", HttpRequest.BodyPublishers.noBody())
-						.build();
-				HttpResponse<String> response;
+					    .uri(URI.create("https://api.themoviedb.org/3/find/" + GptResponse.get(i) +"?external_source=imdb_id&language=pt-br"))
+					    .header("accept", "application/json")
+					    .header("Authorization", "Bearer " + ApiConstants.tmdb_key)
+					    .method("GET", HttpRequest.BodyPublishers.noBody())
+					    .build();
+					HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 				try {
 					response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 					titles.add(response.body());
 				} catch (IOException | InterruptedException e) {
-					titles.add(e.getMessage());
+					e.printStackTrace();
 				}
 			}catch(Exception e) {
-				titles.add(e.getMessage());
+				e.printStackTrace();
 			}
 		}
 		
@@ -67,7 +68,8 @@ public class TitleController {
 						+ "Eu realmente gostei de assistir os filmes e séries " + titles
 						+ ". Meus gêneros de filme favoritos são " + gens
 						+ ". Você poderia me recomendar alguns filmes ou séries atuais com base nessas preferências?"
-						+ "retorne a resposta APENAS como JSON Object em pt-br separado em filmes e series"
+						+ "retorne a resposta APENAS como JSON Object em pt-br separado em filmes e series, "
+						+ "listando o imdbID de cada"
 				);
 		try {
 			return formatGpt(gpt.chat());
@@ -87,11 +89,11 @@ public class TitleController {
 		
 		for(int i=0; i<titles.length(); i++) {
 			JSONObject title = titles.getJSONObject(i);
-			formatedGpt.add(title.getString("titulo"));
+			formatedGpt.add(title.getString("imdbID"));
 		}
 		for(int i=0; i<series.length(); i++) {
 			JSONObject serie = series.getJSONObject(i);
-			formatedGpt.add(serie.getString("titulo"));
+			formatedGpt.add(serie.getString("imdbID"));
 		}
 		
 		return formatedGpt;
