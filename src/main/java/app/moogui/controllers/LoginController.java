@@ -54,14 +54,20 @@ public class LoginController {
 	
 	 @RequestMapping("/user")
 	    public UserModel getUserDetailsAfterLogin(Authentication authentication) {
-	        Optional<UserModel> userO = Optional.of(serv.findByEmail(authentication.getName()));
-	        List<UserModel> user = userO.map(Collections::singletonList)
-	                .orElse(Collections.emptyList());
-	        if (user.size() > 0) {
-	            return user.get(0);
-	        } else {
-	            return null;
-	        }
+		 try {
+			 Optional<UserModel> userO = Optional.of(serv.findByEmail(authentication.getName()));
+			 List<UserModel> user = userO.map(Collections::singletonList)
+					 .orElse(Collections.emptyList());
+			 if (user.size() > 0) {
+				 return user.get(0);
+			 } else {
+				 return null;
+			 }
+			 
+		 }catch (Exception e) {
+			 e.printStackTrace();
+			 return null;
+		 }
 
 	    }
 

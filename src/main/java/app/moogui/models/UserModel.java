@@ -24,7 +24,6 @@ public class UserModel implements Serializable{
 	private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator="native")
 	private Long user_id;
 	private String username;
 	private String email;
@@ -58,7 +57,7 @@ public class UserModel implements Serializable{
 	public void setRole(String role) {
 		this.role = role;
 	}
-
+ 
 
 	public Long getId() {
 		return user_id;

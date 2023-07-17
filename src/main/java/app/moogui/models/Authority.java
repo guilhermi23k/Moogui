@@ -15,6 +15,8 @@ public class Authority {
 	    @ManyToOne
 	    @JoinColumn(name = "user_id")
 	    private UserModel user;
+	    
+	    
 	    public Long getId() {
 	        return id;
 	    }

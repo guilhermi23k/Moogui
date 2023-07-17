@@ -6,21 +6,27 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.moogui.constants.ApiConstants;
 import app.moogui.models.GptModel;
+import app.moogui.models.UserModel;
+import app.moogui.services.UserService;
 
 
 @RestController
 public class TitleController {
 	
+	private UserService serv;
 	
 	@GetMapping(value = "/choices")
 	public List<String> getTitles() {
@@ -56,6 +62,8 @@ public class TitleController {
 	
 	
 	public List<String> getGptResponse() {
+		Authentication auth= SecurityContextHolder.getContext().getAuthentication();
+		
 		List<String> titles = new ArrayList();
 		List<String> gens = new ArrayList();
 		gens.add("Ação");
@@ -81,7 +89,7 @@ public class TitleController {
 	}
 	
 	
-	List<String> formatGpt(String gpt) {
+	public List<String> formatGpt(String gpt) {
 		List<String> formatedGpt = new ArrayList();
 		JSONObject gptObject = new JSONObject(gpt);
 		JSONArray titles = gptObject.getJSONArray("filmes"); 
@@ -98,6 +106,7 @@ public class TitleController {
 		
 		return formatedGpt;
 	}
+	
 	
 	
 }
