@@ -1,5 +1,6 @@
 package app.moogui.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +37,6 @@ public class UserController {
 		return ResponseEntity.ok().body(obj);
 	}
 	
-//	@PostMapping
-//	public ResponseEntity<UserModel> createUser(@RequestBody UserModel obj){
-//		obj = service.newUser(obj);
-//		return ResponseEntity.ok().body(obj);
-//	}
-	
 	@PutMapping(value="/{id}")
 	public ResponseEntity<UserModel> updateUser(@PathVariable Long id, @RequestBody UserModel obj){
 		obj = service.update(id, obj);
@@ -52,6 +47,27 @@ public class UserController {
 	public ResponseEntity<UserModel> delete(@PathVariable Long id){
 		service.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	
+	
+	@GetMapping(value = "/choices")
+	public List<String> getTitles() {
+		GptController response = new GptController();
+		return movieApi(response.getResponse());
+	}
+	
+	public List<String> movieApi(List<String> gptResponse) {
+		List<String> titles = new ArrayList();
+		for(int i=0;i<gptResponse.size();i++) {
+			TitleController t = new TitleController(gptResponse.get(i).toString());
+			Thread thread = new Thread(t);
+			thread.start();
+			titles.addAll(t.getTitles());
+		}
+		
+		return titles;
+		
 	}
 	
 	
