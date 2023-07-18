@@ -43,9 +43,11 @@ public class MooguiAuthenticatorProvider implements AuthenticationProvider{
             } else {
                 throw new BadCredentialsException("Invalid password!");
             }
+            
         }else {
             throw new BadCredentialsException("No user registered with this details!");
         }
+        
     }
     
     private List<GrantedAuthority> getGrantedAuthorities(Set<Authority> authorities) {

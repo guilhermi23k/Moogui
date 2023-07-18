@@ -2,10 +2,13 @@ package app.moogui.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import app.moogui.models.Gender;
+import app.moogui.models.Title;
 import app.moogui.models.UserModel;
 import app.moogui.repositories.UserRepository;
 
@@ -50,6 +53,16 @@ public class UserService {
 		entity.setEmail(obj.getEmail());
 		entity.setPassword(obj.getPassword());
 	}
+	public void addTitles(List<Title> t, String email) {
+		Optional<UserModel> obj = repository.findByEmail(email);
+		obj.get().addFavTitles(t);
+	}
+	
+	public void addGenders(List<Gender> g, String email) {
+		Optional<UserModel> obj = repository.findByEmail(email);
+		obj.get().addFavGender(g);
+	}
+	
 	
 }
 

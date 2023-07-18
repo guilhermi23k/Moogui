@@ -37,7 +37,7 @@ public class Authority {
 	        return user;
 	    }
 
-	    public void setCustomer(UserModel user) {
+	    public void setUser(UserModel user) {
 	        this.user = user;
 	    }
 }

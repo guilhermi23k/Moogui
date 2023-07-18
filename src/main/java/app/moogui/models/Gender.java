@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,7 +19,10 @@ public class Gender implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String tipo;
+	private String type;
+	@ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserModel user;
 	
 	
 	
@@ -26,19 +31,19 @@ public class Gender implements Serializable{
 	
 	public Gender(Long id, String tipo) {
 		this.id = id;
-		this.tipo = tipo;
+		this.type = tipo;
 	}
 
 	public Gender(String tipo) {
-		this.tipo = tipo;
+		this.type = tipo;
 	}
 
-	public String getTipo() {
-		return tipo;
+	public String getType() {
+		return type;
 	}
 
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+	public void setType(String tipo) {
+		this.type = tipo;
 	}
 
 	public Long getId() {
