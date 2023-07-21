@@ -1,12 +1,12 @@
 package app.moogui.controllers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import app.moogui.models.GptModel;
@@ -14,22 +14,23 @@ import app.moogui.models.UserModel;
 import app.moogui.services.UserService;
 
 public class GptController {
-	@Autowired
-	private UserService serv;
 	
 	
-	public List<String> getResponse(){
-		String user;
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		user = principal.toString();
-		UserModel obj = serv.findByEmail(user);
-		
+	
+	public List<String> getResponse(UserService userService){
+		Object username = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserModel user = userService.findByEmail(username.toString());
+		List<String> titles = user.getFavTitlesName();
+		List<String> genders = user.getFavGendersName();
+        
 		GptModel gpt = new GptModel(
 				"Olá! Estou procurando algumas recomendações de filmes. "
 						+ "Eu realmente gostei de assistir os filmes e séries " + 
-						obj.getFavTitles().stream().map(t -> t.getName()).collect(Collectors.toList())
+						"John Wick" +
+						titles
 						+ ". Meus gêneros de filme favoritos são " + 
-						obj.getFavGenders().stream().map(t -> t.getType()).collect(Collectors.toList())
+						"Ação" + 
+						genders
 						+ ". Você poderia me recomendar alguns filmes ou séries atuais com base nessas preferências?"
 						+ "retorne a resposta APENAS como JSON Object em pt-br separado em filmes e series, "
 						+ "listando o imdbID de cada"

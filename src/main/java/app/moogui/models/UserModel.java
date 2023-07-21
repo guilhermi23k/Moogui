@@ -2,6 +2,7 @@ package app.moogui.models;
 
 import java.io.Serializable;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -20,7 +21,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-@Entity
+@Entity 
 @Table(name="tb_user")
 public class UserModel implements Serializable{
 	private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
@@ -124,6 +125,14 @@ public class UserModel implements Serializable{
 		return favTitles;
 	}
 	
+	public List<String> getFavTitlesName() {
+		List<String> titles = new ArrayList();
+		favTitles.forEach(t -> {
+			titles.add(t.toString());
+		});
+		return titles;
+	}
+	
 	public void setFavTitles(List<Title> favTitles) {
 		this.favTitles = favTitles;
 	}
@@ -145,6 +154,13 @@ public class UserModel implements Serializable{
 	public List<Gender> getFavGenders() {
 		return favGenders;
 	}
+	public List<String> getFavGendersName() {
+		List<String> genders = new ArrayList<String>();
+		favTitles.forEach(t -> {
+			genders.add(t.toString());
+		});
+		return genders;
+	}
 	
 	public void setFavGenders(List<Gender> favGenders) {
 		this.favGenders = favGenders;
@@ -153,7 +169,7 @@ public class UserModel implements Serializable{
 	public void addFavGender(List<Gender> favGender) {
 		ArrayDeque<Gender> org = new ArrayDeque<>();
 		org.addAll(this.favGenders);
-		if(org.size() + favGender.size() <= titleLimit) 
+		if(org.size() + favGender.size() <= genderLimit) 
 			org.addAll(favGender);
 		
 		favGenders.forEach(g -> { 

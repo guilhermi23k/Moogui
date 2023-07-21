@@ -8,10 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.moogui.models.UserModel;
@@ -19,31 +17,30 @@ import app.moogui.services.UserService;
 
 
 @RestController
-@RequestMapping(value = "/users")
 public class UserController {
 	
 	@Autowired
 	private UserService service;
 	
-	@GetMapping
+	@GetMapping(value="/users")
 	public ResponseEntity<List<UserModel>> findAll(){
 		List<UserModel> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
-	@GetMapping(value="/{id}")
+	@GetMapping(value="/users/{id}")
 	public ResponseEntity<UserModel> findById(@PathVariable long id){
 		UserModel obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
-	@PutMapping(value="/{id}")
+	@PutMapping(value="/users/{id}")
 	public ResponseEntity<UserModel> updateUser(@PathVariable Long id, @RequestBody UserModel obj){
 		obj = service.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}
 	
-	@DeleteMapping(value = "/{id}")
+	@DeleteMapping(value = "/users/{id}")
 	public ResponseEntity<UserModel> delete(@PathVariable Long id){
 		service.delete(id);
 		return ResponseEntity.noContent().build();
@@ -53,18 +50,23 @@ public class UserController {
 	
 	@GetMapping(value = "/choices")
 	public List<String> getTitles() {
-		GptController response = new GptController();
-		return movieApi(response.getResponse());
+//		long tempoInicial = System.currentTimeMillis();
+		GptController gpt = new GptController();
+		List<String> gptResponse = gpt.getResponse(service);
+//		getJsonTitles(gptResponse);
+//		return  System.currentTimeMillis() - tempoInicial;
+		return getJsonTitles(gptResponse);
+
 	}
 	
-	public List<String> movieApi(List<String> gptResponse) {
-		List<String> titles = new ArrayList();
+	private List<String> getJsonTitles(List<String> gptResponse) {
+		List<String> titles = new ArrayList<String>();
+		TitleController t = new TitleController(gptResponse);
 		for(int i=0;i<gptResponse.size();i++) {
-			TitleController t = new TitleController(gptResponse.get(i).toString());
-			Thread thread = new Thread(t);
-			thread.start();
-			titles.addAll(t.getTitles());
+			titles.add(t.getTitle(i));
 		}
+
+
 		
 		return titles;
 		
