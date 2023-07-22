@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import app.moogui.models.Authority;
-import app.moogui.models.Title;
 import app.moogui.models.UserModel;
 import app.moogui.repositories.UserRepository;
 

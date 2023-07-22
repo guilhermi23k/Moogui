@@ -18,11 +18,11 @@ public class GptController {
 	
 	
 	public List<String> getResponse(UserService userService){
-		Object username = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserModel user = userService.findByEmail(username.toString());
+		Object email = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserModel user = userService.findByEmail(email.toString());
 		List<String> titles = user.getFavTitlesName();
 		List<String> genders = user.getFavGendersName();
-        
+         
 		GptModel gpt = new GptModel(
 				"Olá! Estou procurando algumas recomendações de filmes. "
 						+ "Eu realmente gostei de assistir os filmes e séries " + 

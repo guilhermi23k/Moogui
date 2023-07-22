@@ -19,9 +19,6 @@ import app.moogui.services.UserService;
 
 @RestController
 public class LoginController {
-//
-//    @Autowired
-//    private UserRepository repo;
     
     @Autowired
     private UserService serv;

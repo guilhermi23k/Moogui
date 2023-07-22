@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import app.moogui.models.UserModel;
+import app.moogui.services.TitleService;
 import app.moogui.services.UserService;
 
 
@@ -21,6 +23,9 @@ public class UserController {
 	
 	@Autowired
 	private UserService service;
+	
+	@Autowired
+	private TitleService serviceT;
 	
 	@GetMapping(value="/users")
 	public ResponseEntity<List<UserModel>> findAll(){
@@ -61,15 +66,13 @@ public class UserController {
 	
 	private List<String> getJsonTitles(List<String> gptResponse) {
 		List<String> titles = new ArrayList<String>();
-		TitleController t = new TitleController(gptResponse);
+		TitleController t = new TitleController(gptResponse, serviceT);
+		Object email = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		for(int i=0;i<gptResponse.size();i++) {
+//			service.addFavTitles(t.getTitle(i), email);
 			titles.add(t.getTitle(i));
 		}
-
-
-		
 		return titles;
-		
 	}
 	
 	

@@ -53,12 +53,12 @@ public class UserService {
 		entity.setEmail(obj.getEmail());
 		entity.setPassword(obj.getPassword());
 	}
-	public void addTitles(List<Title> t, String email) {
+	public void addFavTitles(Title t, String email) {
 		Optional<UserModel> obj = repository.findByEmail(email);
-		obj.get().addFavTitles(t);
+		obj.get().addFavTitle(t);
 	}
 	
-	public void addGenders(List<Gender> g, String email) {
+	public void addFavGenders(List<Gender> g, String email) {
 		Optional<UserModel> obj = repository.findByEmail(email);
 		obj.get().addFavGender(g);
 	}

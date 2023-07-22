@@ -18,6 +18,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -49,7 +52,13 @@ public class UserModel implements Serializable{
 	
 //	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	@JsonIgnore
-	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
+//	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
+	@ManyToMany
+	@JoinTable(
+			name = "tb_user_title",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "title_id")
+			)
 	private List<Title> favTitles;
 	
 //	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -137,17 +146,16 @@ public class UserModel implements Serializable{
 		this.favTitles = favTitles;
 	}
 
-	public void addFavTitles(List<Title> favTitles) {
+	public void addFavTitle(Title favTitle) {
 		ArrayDeque<Title> org = new ArrayDeque<>();	
-		org.addAll(this.favTitles);
-		if(org.size() + favTitles.size() <= titleLimit) 
-			org.addAll(favTitles);
 		
-		favTitles.forEach(t -> { 
-			org.removeFirst();	 
-			org.add(t);
-		});
-		
+		org.addAll(favTitles);
+		if(org.size() + 1 <= titleLimit) {
+			org.add(favTitle);			
+		}else {
+			org.removeFirst();
+			org.add(favTitle);
+		}
 		setFavTitles((List<Title>) org);
 	}
 
