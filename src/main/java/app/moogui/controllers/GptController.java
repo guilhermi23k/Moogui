@@ -21,7 +21,8 @@ public class GptController {
 		Object email = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserModel user = userService.findByEmail(email.toString());
 		List<String> titles = user.getFavTitlesName();
-		List<String> genders = user.getFavGendersName();
+//		List<String> genders = user.getFavGendersName();
+		List<String> genders = null;
          
 		GptModel gpt = new GptModel(
 				"Olá! Estou procurando algumas recomendações de filmes. "

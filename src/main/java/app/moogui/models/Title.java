@@ -3,6 +3,9 @@ package app.moogui.models;
 import java.util.List;
 import java.util.Objects;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -40,6 +43,12 @@ public class Title{
 		this.json = json;
 	}
 	
+	public String getName() {
+		JSONObject json = new JSONObject(this.json);
+		JSONArray mvResults = json.getJSONArray("movie_results");
+		json = mvResults.getJSONObject(0);
+		return json.getString("title");	
+	}
 
 	@Override
 	public String toString() {

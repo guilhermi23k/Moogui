@@ -58,9 +58,11 @@ public class UserService {
 		obj.get().addFavTitle(t);
 	}
 	
-	public void addFavGenders(List<Gender> g, String email) {
+	public void addFavGenders(List<Gender> gen, String email) {
 		Optional<UserModel> obj = repository.findByEmail(email);
-		obj.get().addFavGender(g);
+	    gen.forEach(g -> {
+	    	obj.get().addFavGender(g);
+		});
 	}
 	
 	

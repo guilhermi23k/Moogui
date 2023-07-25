@@ -137,7 +137,7 @@ public class UserModel implements Serializable{
 	public List<String> getFavTitlesName() {
 		List<String> titles = new ArrayList();
 		favTitles.forEach(t -> {
-			titles.add(t.toString());
+			titles.add(t.getName());
 		});
 		return titles;
 	}
@@ -164,7 +164,7 @@ public class UserModel implements Serializable{
 	}
 	public List<String> getFavGendersName() {
 		List<String> genders = new ArrayList<String>();
-		favTitles.forEach(t -> {
+		favGenders.forEach(t -> {
 			genders.add(t.toString());
 		});
 		return genders;
@@ -174,16 +174,16 @@ public class UserModel implements Serializable{
 		this.favGenders = favGenders;
 	}
 
-	public void addFavGender(List<Gender> favGender) {
+	public void addFavGender(Gender favGender) {
 		ArrayDeque<Gender> org = new ArrayDeque<>();
 		org.addAll(this.favGenders);
-		if(org.size() + favGender.size() <= genderLimit) 
-			org.addAll(favGender);
-		
-		favGenders.forEach(g -> { 
+		if(org.size() + 1 <= genderLimit) {
+			org.add(favGender);			
+		}else {
 			org.removeFirst();	 
-			org.add(g);
-		});
+			org.add(favGender);		
+		}
+		
 		
 		setFavGenders((List<Gender>) org);
 	}
