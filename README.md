@@ -83,7 +83,7 @@ http://localhost:8080/register
 {
     "username": "guimo",
     "email": "gui.moreirasa@gmail.com",
-    "password": "gui196633",
+    "password": "senhadificil",
     "role": "ROLE_USER"
 }
 ```
