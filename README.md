@@ -67,7 +67,7 @@ If You are looking for Moogui UI, try:
 [Back To The Top](#moogui)
 
 ---
-## Sample API Response for Customer Account Creation 
+## Sample API Response for User Account Creation 
 ### Request Type
 ```
 POST
